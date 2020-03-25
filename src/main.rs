@@ -1,6 +1,7 @@
 
 extern crate sdl2;
 
+use sdl2::event::Event;
 use sdl2::pixels::Color;
 use sdl2::rect::Rect;
 use std::time::Duration;
@@ -16,18 +17,16 @@ fn main() {
 
     println!("");
 
-    game_loop();
-
-}
-
-fn game_loop(){
-
-    let mut player = Player{
+    let player = Player{
         x: 100,
         y: 100,
         radius: 20,
     };
 
+    game_loop(player);
+}
+
+fn game_loop(mut player: Player){
 
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
@@ -39,19 +38,29 @@ fn game_loop(){
 
     let mut canvas = window.into_canvas().build().unwrap();
 
-    loop {
+    let mut event_pump = sdl_context.event_pump().unwrap();
+
+    'gameloop: loop {
 
         canvas.set_draw_color(Color::RGB(0,0,0));
-       // canvas.clear(); // Clear Screen
+        canvas.clear();
 
         canvas.set_draw_color(Color::RGB(255,210,0));
         canvas.fill_rect(Rect::new(player.x, player.y, 10, 10)).unwrap();
         canvas.present();
 
+        for event in event_pump.poll_iter() {
+            match event {
+                Event::Quit {..} => {
+                    break 'gameloop
+                },
+                _ => {}
+            }
+        }
+
         ::std::thread::sleep(Duration::new(0,1_000_000_000u32/60,));
 
-        player.x += 1;
-        player.y += 1;
     }
 
 }
+

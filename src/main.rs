@@ -5,6 +5,7 @@ use sdl2::event::Event;
 use sdl2::pixels::Color;
 use sdl2::rect::Rect;
 use std::time::Duration;
+use sdl2::keyboard::Keycode;
 
 #[derive(Debug)]
 struct Player {
@@ -51,9 +52,10 @@ fn game_loop(mut player: Player){
 
         for event in event_pump.poll_iter() {
             match event {
-                Event::Quit {..} => {
+                Event::Quit {..} | Event::KeyDown { keycode: Some(Keycode::Escape), .. } => {
                     break 'gameloop
                 },
+                
                 _ => {}
             }
         }

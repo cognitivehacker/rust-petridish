@@ -56,6 +56,22 @@ fn game_loop(mut player: Player){
                     break 'gameloop
                 },
                 
+                Event::KeyDown { keycode: Some(Keycode::W), .. } => {
+                    player.y -= 5;
+                },
+
+                Event::KeyDown { keycode: Some(Keycode::S), .. } => {
+                    player.y += 5;
+                },
+
+                Event::KeyDown { keycode: Some(Keycode::A), .. } => {
+                    player.x -= 5;
+                },
+
+                Event::KeyDown { keycode: Some(Keycode::D), .. } => {
+                    player.x += 5;
+                },
+
                 _ => {}
             }
         }
